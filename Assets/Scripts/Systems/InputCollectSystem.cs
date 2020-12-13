@@ -22,12 +22,8 @@ public class InputCollectSystem : SystemBase
         playerActions.User.MouseMove.performed += MouseMove_performed;
         playerActions.User.MouseMove.Enable();
 
-        var inputEntity = EntityManager.CreateEntity(new ComponentType[] { typeof(InputComponent) });
-        EntityManager.SetComponentData(inputEntity, new InputComponent
-        {
-            MoveInput = float2.zero,
-            ShootInput = false
-        });
+        EntityManager.CreateEntity(new ComponentType[] { typeof(InputComponent) });
+        SetSingleton<InputComponent>(new InputComponent());
     }
 
     protected override void OnDestroy()

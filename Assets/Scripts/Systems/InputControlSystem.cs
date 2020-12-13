@@ -6,18 +6,14 @@ using Unity.Mathematics;
 
 public class InputControlSystem : SystemBase
 {
+    protected override void OnCreate()
+    {
+        base.OnCreate();
+    }
+
     protected override void OnUpdate()
     {
-        InputComponent userInput = new InputComponent();
-
-        Entities
-            .ForEach((in InputComponent input) =>
-            {
-                userInput = input;
-
-            })
-            .WithoutBurst()
-            .Run();
+        InputComponent userInput = GetSingleton<InputComponent>();
 
 
         /// Get the physics world.
