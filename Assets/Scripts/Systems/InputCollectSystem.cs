@@ -20,6 +20,7 @@ public class InputCollectSystem : SystemBase
         playerActions.User.MouseDown.performed += MouseDown_performed;
         playerActions.User.MouseDown.Enable();
         playerActions.User.MouseMove.performed += MouseMove_performed;
+        playerActions.User.MouseMove.Enable();
 
         var inputEntity = EntityManager.CreateEntity(new ComponentType[] { typeof(InputComponent) });
         EntityManager.SetComponentData(inputEntity, new InputComponent
@@ -66,14 +67,6 @@ public class InputCollectSystem : SystemBase
     void MouseDown_performed(InputAction.CallbackContext ctx)
     {
         mouseDown = ctx.ReadValue<float>() == 1f;
-        if (mouseDown)
-        {
-            playerActions.User.MouseMove.Enable();
-        }
-        else
-        {
-            playerActions.User.MouseMove.Disable();
-        }
     }
 
     void MouseMove_performed(InputAction.CallbackContext ctx)

@@ -28,7 +28,7 @@ public class PlayerCreationSystem : SystemBase
         Entity? PlayerPrefab = null;
         Entity? BallPrefab = null;
 
-        Entities.ForEach((ref AssetContainer assetContainer) =>
+        Entities.ForEach((in AssetContainer assetContainer) =>
         {
             PlayerPrefab = assetContainer.PlayerPrefab;
             BallPrefab = assetContainer.BallPrefab;
