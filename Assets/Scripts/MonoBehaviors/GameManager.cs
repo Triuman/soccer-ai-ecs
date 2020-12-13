@@ -11,6 +11,16 @@ public class GameManager : MonoBehaviour
     public Mesh ShipMesh;
     public UnityEngine.Material ShipMaterial;
 
+
+    public Camera mainCamera;
+    public static Camera MainCamera;
+
+
+    void Awake()
+    {
+        MainCamera = mainCamera;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/InputActions/PlayerActions.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/Scripts/InputActions/PlayerInputActions.inputactions'
 
 using System;
 using System.Collections;
@@ -12,7 +12,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     public @PlayerInputActions()
     {
         asset = InputActionAsset.FromJson(@"{
-    ""name"": ""PlayerActions"",
+    ""name"": ""PlayerInputActions"",
     ""maps"": [
         {
             ""name"": ""Player"",
@@ -30,6 +30,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""name"": ""Shoot"",
                     ""type"": ""Button"",
                     ""id"": ""9a00e63a-ebab-4f81-80d7-f6695aa13beb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ShootCancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""e8141893-7612-4c52-9d1d-9e5286866127"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
@@ -95,10 +103,67 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""33127e72-fb09-4c2b-8965-e499b06a1c1a"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""90a6a573-0bec-497d-8231-fd370f4b0bbc"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ShootCancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""User"",
+            ""id"": ""9271faee-48a9-4280-ba88-f3787b405197"",
+            ""actions"": [
+                {
+                    ""name"": ""MouseDown"",
+                    ""type"": ""Value"",
+                    ""id"": ""aa1a8c71-6929-40f5-970d-94dd14fc65f2"",
+                    ""expectedControlType"": ""Digital"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MouseMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""661e98a1-64ec-4837-8e2c-9d0683948fa3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""572eec10-16a7-487e-8f20-e6dca147f075"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press(behavior=2)"",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MouseDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39d86b31-de1d-4c80-92f6-e6fc14e69393"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""MouseMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -128,6 +193,11 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
+        m_Player_ShootCancel = m_Player.FindAction("ShootCancel", throwIfNotFound: true);
+        // User
+        m_User = asset.FindActionMap("User", throwIfNotFound: true);
+        m_User_MouseDown = m_User.FindAction("MouseDown", throwIfNotFound: true);
+        m_User_MouseMove = m_User.FindAction("MouseMove", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -179,12 +249,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Shoot;
+    private readonly InputAction m_Player_ShootCancel;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
+        public InputAction @ShootCancel => m_Wrapper.m_Player_ShootCancel;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -200,6 +272,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Shoot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
                 @Shoot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
                 @Shoot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
+                @ShootCancel.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootCancel;
+                @ShootCancel.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootCancel;
+                @ShootCancel.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootCancel;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -210,10 +285,54 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @ShootCancel.started += instance.OnShootCancel;
+                @ShootCancel.performed += instance.OnShootCancel;
+                @ShootCancel.canceled += instance.OnShootCancel;
             }
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // User
+    private readonly InputActionMap m_User;
+    private IUserActions m_UserActionsCallbackInterface;
+    private readonly InputAction m_User_MouseDown;
+    private readonly InputAction m_User_MouseMove;
+    public struct UserActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public UserActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MouseDown => m_Wrapper.m_User_MouseDown;
+        public InputAction @MouseMove => m_Wrapper.m_User_MouseMove;
+        public InputActionMap Get() { return m_Wrapper.m_User; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UserActions set) { return set.Get(); }
+        public void SetCallbacks(IUserActions instance)
+        {
+            if (m_Wrapper.m_UserActionsCallbackInterface != null)
+            {
+                @MouseDown.started -= m_Wrapper.m_UserActionsCallbackInterface.OnMouseDown;
+                @MouseDown.performed -= m_Wrapper.m_UserActionsCallbackInterface.OnMouseDown;
+                @MouseDown.canceled -= m_Wrapper.m_UserActionsCallbackInterface.OnMouseDown;
+                @MouseMove.started -= m_Wrapper.m_UserActionsCallbackInterface.OnMouseMove;
+                @MouseMove.performed -= m_Wrapper.m_UserActionsCallbackInterface.OnMouseMove;
+                @MouseMove.canceled -= m_Wrapper.m_UserActionsCallbackInterface.OnMouseMove;
+            }
+            m_Wrapper.m_UserActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @MouseDown.started += instance.OnMouseDown;
+                @MouseDown.performed += instance.OnMouseDown;
+                @MouseDown.canceled += instance.OnMouseDown;
+                @MouseMove.started += instance.OnMouseMove;
+                @MouseMove.performed += instance.OnMouseMove;
+                @MouseMove.canceled += instance.OnMouseMove;
+            }
+        }
+    }
+    public UserActions @User => new UserActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -227,5 +346,11 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
+        void OnShootCancel(InputAction.CallbackContext context);
+    }
+    public interface IUserActions
+    {
+        void OnMouseDown(InputAction.CallbackContext context);
+        void OnMouseMove(InputAction.CallbackContext context);
     }
 }

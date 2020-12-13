@@ -13,40 +13,49 @@ public class PlayerCreationSystem : SystemBase
 
     Random rnd;
 
-    private static int remainingPlayerCount = 10;
+    private static int remainingPlayerCount = 1;
     private double lastCreateTime = 0;
 
     protected override void OnUpdate()
     {
-        if (Time.ElapsedTime - lastCreateTime < 0.1f)
+        if (Time.ElapsedTime - lastCreateTime < 0.1f || remainingPlayerCount < 1)
         {
             return;
         }
-
+        remainingPlayerCount--;
         lastCreateTime = Time.ElapsedTime;
 
         Entity? PlayerPrefab = null;
         Entity? BallPrefab = null;
 
-        Entities.ForEach((ref PrefabContainer prefabContainer) =>
+        Entities.ForEach((ref AssetContainer assetContainer) =>
         {
-            PlayerPrefab = prefabContainer.PlayerPrefab;
-            BallPrefab = prefabContainer.BallPrefab;
+            PlayerPrefab = assetContainer.PlayerPrefab;
+            BallPrefab = assetContainer.BallPrefab;
         }).Run();
 
         if (PlayerPrefab != null)
         {
             var playerEntity = EntityManager.Instantiate((Entity)PlayerPrefab);
+            EntityManager.AddComponentData(playerEntity, new Tag_Player()
+            {
+            });
             EntityManager.AddComponentData(playerEntity, new PhysicsVelocity()
             {
                 Linear = new Unity.Mathematics.float3(rnd.NextFloat(-10f, 10f), rnd.NextFloat(-10f, 10f), 0)
+            });
+            EntityManager.AddComponentData(playerEntity, new ControlledByIUserInput()
+            {
             });
             EntityManager.AddComponentData(playerEntity, new SetIntertia()
             {
             });
 
-            
+
             var ballEntity = EntityManager.Instantiate((Entity)BallPrefab);
+            EntityManager.AddComponentData(ballEntity, new Tag_Ball()
+            {
+            });
             EntityManager.AddComponentData(ballEntity, new PhysicsVelocity()
             {
                 Linear = new Unity.Mathematics.float3(rnd.NextFloat(-10f, 10f), rnd.NextFloat(-10f, 10f), 0)
