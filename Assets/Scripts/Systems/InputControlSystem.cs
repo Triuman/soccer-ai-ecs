@@ -29,12 +29,11 @@ public class InputControlSystem : SystemBase
             ref PhysicsMass _physicsMass,
             ref Translation translation, in ControlledByIUserInput controlledByIUserInput) =>
             {
-                if (userInput.MouseDown)
-                {
-                    translation.Value.x = userInput.MousePos.x;
-                    translation.Value.y = userInput.MousePos.y;
-                }
-
+                // if (userInput.MouseDown)
+                // {
+                //     translation.Value.x = userInput.MousePos.x;
+                //     translation.Value.y = userInput.MousePos.y;
+                // }
 
                 _physicsVelocity.Linear.z = 0;
                 /// Apply a linear impulse to the entity.
